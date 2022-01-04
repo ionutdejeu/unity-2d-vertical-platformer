@@ -19,7 +19,7 @@ public class CharacterController2D : MonoBehaviour
 	const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
 	private Rigidbody2D m_Rigidbody2D;
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
-	private Vector3 m_Velocity = Vector3.zero;
+	[SerializeField] private Vector3 m_Velocity = Vector3.zero;
 
 	[Header("Events")]
 	[Space]
@@ -31,6 +31,7 @@ public class CharacterController2D : MonoBehaviour
 
 	public BoolEvent OnCrouchEvent;
 	private bool m_wasCrouching = false;
+	private InputController m_InputController;
 
 	private void Awake()
 	{
@@ -41,10 +42,13 @@ public class CharacterController2D : MonoBehaviour
 
 		if (OnCrouchEvent == null)
 			OnCrouchEvent = new BoolEvent();
+
+		m_InputController = new InputController();
 	}
 
 	private void FixedUpdate()
 	{
+		
 		bool wasGrounded = m_Grounded;
 		m_Grounded = false;
 
@@ -60,6 +64,7 @@ public class CharacterController2D : MonoBehaviour
 					OnLandEvent.Invoke();
 			}
 		}
+		Move(1f, false, false);
 	}
 
 
@@ -69,7 +74,7 @@ public class CharacterController2D : MonoBehaviour
 		if (!crouch)
 		{
 			// If the character has a ceiling preventing them from standing up, keep them crouching
-			if (Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround))
+			if (m_CeilingCheck != null && Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround))
 			{
 				crouch = true;
 			}
@@ -125,6 +130,9 @@ public class CharacterController2D : MonoBehaviour
 				// ... flip the player.
 				Flip();
 			}
+
+			//do a raycast in front of the player and see if end of a track 
+
 		}
 		// If the player should jump...
 		if (m_Grounded && jump)
