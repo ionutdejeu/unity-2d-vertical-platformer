@@ -92,7 +92,6 @@ public class CharacterController2D : MonoBehaviour
 	{
 		if (m_Grounded || m_AirControl)
 		{
-			Debug.Log("Touching Left wall: " + touchingLeftWall);
 			if(touchingLeftWall && m_WalkDirection == WalkDirection.Left)
             {
 				m_WalkDirection = WalkDirection.Right;
@@ -152,7 +151,6 @@ public class CharacterController2D : MonoBehaviour
 				}
 			}
 			move = MoveWithWalkDirection(move);
-			Debug.Log(move);
 
 			// Move the character by finding the target velocity
 			Vector3 targetVelocity = new Vector2(move, m_Rigidbody2D.velocity.y);
@@ -190,10 +188,5 @@ public class CharacterController2D : MonoBehaviour
 	{
 		// Switch the way the player is labelled as facing.
 		m_FacingRight = !m_FacingRight;
-
-		// Multiply the player's x local scale by -1.
-		//Vector3 theScale = transform.localScale;
-		//theScale.x *= -1;
-		//transform.localScale = theScale;
 	}
 }
