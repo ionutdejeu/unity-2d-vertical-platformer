@@ -7,8 +7,11 @@ using UnityEngine;
 
 namespace Assets.Character.Controller
 {
-    public interface IMovementModifier
+    
+    
+    public abstract class MovementModifier : MonoBehaviour
     {
-        Vector3 Value { get; }
+        public int order;
+        public abstract Vector2 Value { get; }
     }
 }
