@@ -38,10 +38,9 @@ public class CharacterHandler : MonoBehaviour
         Vector2 targetSpeed = Vector2.zero;
         foreach (MovementModifier mod in modifiers)
         {
-            Debug.Log(mod.Value);
             targetSpeed += mod.Value;
         }
-        Debug.Log(modifiers.Count);
+         
         m_Rigidbody2D.velocity = targetSpeed;
     }
 }

@@ -15,9 +15,10 @@ public class CharacterSpeedModifier : MovementModifier
     
     public override Vector2 Value { get { return _lastComputedSpeed; } }
 
+    [SerializeField] private CharacterState charState;
     [SerializeField] private CharacterHandler charHandler;
     [SerializeField] private CharacterPhysics charPhysics;
-    private WalkDirection m_WalkDirection = WalkDirection.Right;
+    [SerializeField] private WalkDirection m_WalkDirection = WalkDirection.Right;
     [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;  // How much to smooth out the movement
     [SerializeField] private float baseSpeed = 10f;
     [SerializeField] private Vector2 _lastComputedSpeed = Vector2.zero;
@@ -66,19 +67,41 @@ public class CharacterSpeedModifier : MovementModifier
     }
     private float MoveWithWalkDirection(float move)
     {
-        if (isGrounded)
+        charState.isWalking = isGrounded;
+        Debug.Log("is G: " + isGrounded);
+        if ((charState.isWalking || charState.isJumpingOffWall) && charState.isTouchingWall)
         {
-            if (touchingLeftWall && m_WalkDirection == WalkDirection.Left)
-            {
+            
+            if(touchingLeftWall && m_WalkDirection == WalkDirection.Left)
                 m_WalkDirection = WalkDirection.Right;
-            }
-            if (touchingRightWall && m_WalkDirection == WalkDirection.Right)
-            {
+            else if (touchingRightWall && m_WalkDirection == WalkDirection.Right)
                 m_WalkDirection = WalkDirection.Left;
-            }
+
         }
         if (m_WalkDirection == WalkDirection.Right) return m_WalkDirectionRight * move;
         if (m_WalkDirection == WalkDirection.Left) return m_walkDirectionLeft * move;
+
+
+        if (charState.isTouchingWall && !charState.isJumpingOffWall && !isGrounded)
+        {
+            charState.isSlidingWall = true;
+        }
+        else
+        {
+            charState.isSlidingWall = false;
+        }
+
+        Debug.Log("walking: " + charState.isWalking);
+
+        
+
+        if (charState.isJumpingOffWall)
+        {
+            charState.isJumpingOffWall = false;
+        }
+
         return move;
     }
+
+
 }

@@ -7,8 +7,8 @@ using static CharacterController2D;
 
 public class CharacterPhysics : MonoBehaviour
 {
-
-    [SerializeField] private LayerMask m_WhatIsGround;        // A mask determining what is ground to the character
+	[SerializeField] private CharacterState charState;
+	[SerializeField] private LayerMask m_WhatIsGround;        // A mask determining what is ground to the character
     [SerializeField] private LayerMask m_WhatIsWall;          // A mask determining what is ground to the character
     [SerializeField] private Transform m_GroundCheck;         // A position marking where to check if the player is grounded.
     [SerializeField] private Collider2D m_LeftCollider;       // A collider that will be disabled when crouching
@@ -46,6 +46,7 @@ public class CharacterPhysics : MonoBehaviour
 		Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
 		touchingLeftWall = Physics2D.IsTouchingLayers(m_LeftCollider, m_WhatIsWall);
 		touchingRightWall = Physics2D.IsTouchingLayers(m_RightCollider, m_WhatIsWall);
+		charState.isTouchingWall = touchingLeftWall || touchingRightWall;
 		bool c = Physics2D.IsTouchingLayers(m_BottomColloder, m_WhatIsGround);
 
 		for (int i = 0; i < colliders.Length; i++)

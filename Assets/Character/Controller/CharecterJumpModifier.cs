@@ -12,8 +12,6 @@ using UnityEngine;
 public class CharecterJumpModifier : MovementModifier
 {
     [SerializeField] private float jumpForce = 10f;      // Amount of force added when the player jumps.
-    [SerializeField] private float jumpDuration = 10f;   // Amount of time that the force is being applied
-    private long applyForceUntil;
     public override Vector2 Value { get { return _previousComputedSpeed; } }
 
     [SerializeField]
@@ -21,7 +19,9 @@ public class CharecterJumpModifier : MovementModifier
 
     [SerializeField] private CharacterHandler charHandler;
     [SerializeField] private CharacterPhysics charPhysics;
+    [SerializeField] private CharacterState charState;
 
+    private long jumpUntillInTicks = 0;
 
 
     // Start is called before the first frame update
@@ -36,16 +36,51 @@ public class CharecterJumpModifier : MovementModifier
 
     // Update is called once per frame
     void FixedUpdate()
-    {
-        if (charPhysics.m_Grounded)
+    {   
+        if (charPhysics.m_Grounded || charState.isJumping || charState.isTouchingWall) 
         {
+
             float a = Input.GetAxis("Jump");
             _previousComputedSpeed.y = jumpForce * a;
-            applyForceUntil = DateTime.UtcNow.Ticks+100;
+            if(a > 0)
+            {
+                if (!charState.isJumping)
+                {
+                    jumpUntillInTicks = DateTime.UtcNow.Ticks + 2000000;
+                }
+                charState.isJumping = true;
+                if (jumpUntillInTicks < DateTime.UtcNow.Ticks)
+                {
+                    charState.isJumping = false;
+                    Debug.Log("Timestamp :" + jumpUntillInTicks + " is reached");
+                }
+               
+            }
+            else
+            { charState.isJumping = false; }
+            if (charState.isTouchingWall && charState.isJumping)
+            {
+                Debug.Log("Jump off wall");
+                charState.isJumpingOffWall = true;
+            }
+            else
+            {
+                charState.isJumpingOffWall = false;
+            }
+
+            if (charState.isTouchingWall && !charState.isJumping)
+            {
+                charState.isSlidingWall = true;
+            }
+            else
+            {
+                charState.isSlidingWall = false;
+            }
         }
         else
         {
             _previousComputedSpeed.y = 0;
         }
     }
+    
 }
