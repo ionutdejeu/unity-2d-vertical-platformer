@@ -24,6 +24,7 @@ public class CharacterSpeedModifier : MovementModifier
     [SerializeField] private Vector2 _lastComputedSpeed = Vector2.zero;
     [SerializeField] private Vector2 m_Velocity = Vector2.zero;
 
+
     private void OnEnable() => charHandler.AddModifier(this);
     private void OnDisable() => charHandler.RemoveModifier(this);
 
@@ -33,6 +34,7 @@ public class CharacterSpeedModifier : MovementModifier
     private bool touchingRightWall = false;
     private int m_WalkDirectionRight = 1; 
     private int m_walkDirectionLeft = -1;
+    private
 
 
     // Start is called before the first frame update

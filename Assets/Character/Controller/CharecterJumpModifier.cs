@@ -81,6 +81,8 @@ public class CharecterJumpModifier : MovementModifier
         {
             _previousComputedSpeed.y = 0;
         }
+
+
     }
     
 }
