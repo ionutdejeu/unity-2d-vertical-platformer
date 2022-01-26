@@ -10,4 +10,10 @@ public class InputController
         float v = Input.GetAxis("Vertical");
         return new Vector2(h,v);
     }
+
+    public Vector2 GetHorizonalMovement()
+    {
+        float h = Input.GetAxis("Horizontal");
+        return new Vector2(h, 0);
+    }
 }

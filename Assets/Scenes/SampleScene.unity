@@ -2083,7 +2083,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5960842737647628694, guid: cd02345d93919aa4d8a303646e15ff78, type: 3}
       propertyPath: jumpForce
-      value: 50
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5960842737647628695, guid: cd02345d93919aa4d8a303646e15ff78, type: 3}
       propertyPath: m_Enabled

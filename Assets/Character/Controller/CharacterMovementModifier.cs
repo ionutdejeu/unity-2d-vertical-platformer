@@ -39,7 +39,7 @@ namespace Assets.Character.Controller
         }
         private void Update()
         {
-            _movementDiretion = controller.GetMovementDirection();
+            _movementDiretion = controller.GetHorizonalMovement();
             Debug.Log(_value);
         }
     }

@@ -46,7 +46,7 @@ public class CharecterJumpModifier : MovementModifier
             {
                 if (!charState.isJumping)
                 {
-                    jumpUntillInTicks = DateTime.UtcNow.Ticks + 2000000;
+                    jumpUntillInTicks = DateTime.UtcNow.Ticks + 5000000;
                 }
                 charState.isJumping = true;
                 if (jumpUntillInTicks < DateTime.UtcNow.Ticks)
