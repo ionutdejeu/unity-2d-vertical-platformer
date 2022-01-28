@@ -52,7 +52,6 @@ public class CharecterJumpModifier : MovementModifier
                 if (jumpUntillInTicks < DateTime.UtcNow.Ticks)
                 {
                     charState.isJumping = false;
-                    Debug.Log("Timestamp :" + jumpUntillInTicks + " is reached");
                 }
                
             }
@@ -81,8 +80,10 @@ public class CharecterJumpModifier : MovementModifier
         {
             _previousComputedSpeed.y = 0;
         }
-
-
     }
-    
+
+    public override Vector2 AddMovementValue(Vector2 currValue)
+    {
+        return _previousComputedSpeed;
+    }
 }

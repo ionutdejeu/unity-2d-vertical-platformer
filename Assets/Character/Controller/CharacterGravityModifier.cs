@@ -20,4 +20,9 @@ public class CharacterGravityModifier : MovementModifier
     {
         _lastComputedSpeed = new Vector2(0, gravity);
     }
+
+    public override Vector2 AddMovementValue(Vector2 currValue)
+    {
+        throw new System.NotImplementedException();
+    }
 }

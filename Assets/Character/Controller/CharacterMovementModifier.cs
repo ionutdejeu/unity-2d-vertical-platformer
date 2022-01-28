@@ -40,7 +40,11 @@ namespace Assets.Character.Controller
         private void Update()
         {
             _movementDiretion = controller.GetHorizonalMovement();
-            Debug.Log(_value);
+        }
+
+        public override Vector2 AddMovementValue(Vector2 currValue)
+        {
+            return _value;
         }
     }
 }

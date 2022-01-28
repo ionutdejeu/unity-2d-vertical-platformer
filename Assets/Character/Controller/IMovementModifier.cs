@@ -14,6 +14,8 @@ namespace Assets.Character.Controller
         
         public int order;
         public abstract Vector2 Value { get; }
+
+        public abstract Vector2 AddMovementValue(Vector2 currValue);
         
     }
 }

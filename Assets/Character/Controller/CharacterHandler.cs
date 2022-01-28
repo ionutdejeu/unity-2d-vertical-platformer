@@ -10,7 +10,7 @@ public class CharacterHandler : MonoBehaviour
 
     public static UnityEvent<CharacterHandler> OnPlayerDiedEvent = new UnityEvent<CharacterHandler>();
     public static UnityEvent<CharacterHandler> OnPlayerSpawendEvent = new UnityEvent<CharacterHandler>();
-    private List<MovementModifier> modifiers = new List<MovementModifier>();
+   [SerializeField] private List<MovementModifier> modifiers = new List<MovementModifier>();
    [SerializeField] private ReadOnlyCollection<MovementModifier> modifiersList;
    // Start is called before the first frame update
    private Rigidbody2D m_Rigidbody2D;
