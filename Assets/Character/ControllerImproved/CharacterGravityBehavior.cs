@@ -18,7 +18,10 @@ namespace Assets.Character.ControllerImproved
         }
         public Vector2 ComputeBehavior(Vector2 currentSpeed, CustomCharacterState state)
         {
-            return gravityVector;   
+            if (state.gravityEnabled)
+                return gravityVector;
+            else
+                return Vector2.zero;
         }
     }
 }

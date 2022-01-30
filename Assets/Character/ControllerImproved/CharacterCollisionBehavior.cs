@@ -34,7 +34,11 @@ namespace Assets.Character.ControllerImproved
 				OnLandEvent = new UnityEvent();
 
 		}
- 
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+			
+        }
 
         public Vector2 ComputeBehavior(Vector2 currentSpeed, CustomCharacterState state)
         {
@@ -44,6 +48,7 @@ namespace Assets.Character.ControllerImproved
 			Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
 			touchingLeftWall = Physics2D.IsTouchingLayers(m_LeftCollider, m_WhatIsWall);
 			touchingRightWall = Physics2D.IsTouchingLayers(m_RightCollider, m_WhatIsWall);
+			
 			state.isTouchingWall = touchingLeftWall || touchingRightWall;
 			bool c = Physics2D.IsTouchingLayers(m_BottomColloder, m_WhatIsGround);
 

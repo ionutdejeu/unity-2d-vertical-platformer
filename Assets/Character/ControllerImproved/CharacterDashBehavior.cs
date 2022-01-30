@@ -14,40 +14,65 @@ namespace Assets.Character.ControllerImproved
         private Vector2 _lastComputedSpeed = Vector2.zero;
         [SerializeField] private int dashDuration = 2;
         [SerializeField] private float dashSpeed = 10f;
+        [SerializeField] private int cooldown = 1;
+
 
 
         private long dashUntilTicks = 0;
         private bool isDashing = false;
+        private Vector2 dashDirection;
+        private Vector2 speedPrevFrame;
         
+
+        private bool continueDashing(long currentTimestamp)
+        {
+            return dashUntilTicks > currentTimestamp;
+        }
+
+        /*
+         * Support for dash cooldown
+         */
+        private bool canDash(long lastDashTimestamp,long currentTimestamp, int cooldown)
+        {
+            return lastDashTimestamp == 0 || (currentTimestamp > (lastDashTimestamp+ 1000000 * cooldown));
+        }
+
+        private bool canDashAfterJump(CustomCharacterState state)
+        {
+            return true;
+        }
 
         public Vector2 ComputeBehavior(Vector2 currentSpeed, CustomCharacterState state)
         {
             float a = Input.GetAxis("Fire1");
-            if (a > 0 && !state.isDashing)
+            if (a > 0 && !isDashing && canDash(dashUntilTicks, DateTime.UtcNow.Ticks, cooldown))
             {
-                dashUntilTicks = DateTime.UtcNow.Ticks + 10000000 * dashDuration;
+                dashUntilTicks = DateTime.UtcNow.Ticks + 1000000 * dashDuration;
+                float direction = Vector2.Dot(speedPrevFrame, new Vector2(1, 0));
+                direction = direction > 0 ? 1 : -1;
+                dashDirection = new Vector2(direction,0);
+
                 isDashing = true;
             }
-            else
+            else if(isDashing && !continueDashing(DateTime.UtcNow.Ticks))
             {
                 isDashing = false;
             }
 
-            Debug.Log(isDashing);
-            if (isDashing && dashUntilTicks > DateTime.UtcNow.Ticks)
+            if (isDashing && continueDashing(DateTime.UtcNow.Ticks))
             {
-                state.isDashing = true;
-                state.controlEnabled = false;
-                Debug.Log("Dash timestamp :" + dashUntilTicks + " is reached");
-                _lastComputedSpeed = currentSpeed * dashSpeed * Time.deltaTime;
+                state.isDashing = true;             
+                _lastComputedSpeed = dashDirection * dashSpeed * Time.deltaTime;
             }
             else
             {
                 state.isDashing = false;
-                state.controlEnabled = true;
-                _lastComputedSpeed = Vector2.zero;
+                state.controlEnabled = state.gravityEnabled = !state.isDashing;
+                _lastComputedSpeed = currentSpeed;
             }
-            Debug.Log(_lastComputedSpeed);
+            state.controlEnabled = state.gravityEnabled = !state.isDashing;
+            speedPrevFrame = new Vector2(currentSpeed.x, currentSpeed.y).normalized;
+
             return _lastComputedSpeed;
         }
     }

@@ -45,7 +45,7 @@ namespace Assets.Character.ControllerImproved
             targetSpeed += jumpBehavior.ComputeBehavior(targetSpeed, state);
             targetSpeed += gravityBehavior.ComputeBehavior(targetSpeed, state);
             targetSpeed += collisionBehavior.ComputeBehavior(targetSpeed, state);
-            targetSpeed += dashBehavior.ComputeBehavior(targetSpeed, state);
+            targetSpeed = dashBehavior.ComputeBehavior(targetSpeed, state);
 
             m_Rigidbody2D.velocity = targetSpeed;
         }

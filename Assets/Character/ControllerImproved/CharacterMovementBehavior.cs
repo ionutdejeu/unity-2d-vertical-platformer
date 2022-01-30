@@ -30,10 +30,15 @@ namespace Assets.Character.ControllerImproved
         
         public Vector2 ComputeBehavior(Vector2 currentSpeed, CustomCharacterState state)
         {
-
-            _value = new Vector2(_movementDiretion.x, _movementDiretion.y);
-            _value *= baseSpeed * Time.deltaTime;
-            
+            if (state.controlEnabled)
+            {
+                _value = new Vector2(_movementDiretion.x, _movementDiretion.y);
+                _value *= baseSpeed * Time.deltaTime;
+            }
+            if (!state.controlEnabled)
+            {
+                _value = Vector2.zero;
+            }
             return _value;
         }
     }
