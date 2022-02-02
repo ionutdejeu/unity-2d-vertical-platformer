@@ -44,6 +44,7 @@ namespace Assets.Character.ControllerImproved
 
         public Vector2 ComputeBehavior(Vector2 currentSpeed, CustomCharacterState state)
         {
+            // need to handle dash after jump to stop the jumping
             float a = Input.GetAxis("Fire1");
             if (a > 0 && !isDashing && canDash(dashUntilTicks, DateTime.UtcNow.Ticks, cooldown))
             {
@@ -51,8 +52,8 @@ namespace Assets.Character.ControllerImproved
                 float direction = Vector2.Dot(speedPrevFrame, new Vector2(1, 0));
                 direction = direction > 0 ? 1 : -1;
                 dashDirection = new Vector2(direction,0);
-
                 isDashing = true;
+
             }
             else if(isDashing && !continueDashing(DateTime.UtcNow.Ticks))
             {
@@ -61,13 +62,15 @@ namespace Assets.Character.ControllerImproved
 
             if (isDashing && continueDashing(DateTime.UtcNow.Ticks))
             {
-                state.isDashing = true;             
+                state.isDashing = true;
+                state.isJumping = false;
                 _lastComputedSpeed = dashDirection * dashSpeed * Time.deltaTime;
             }
             else
             {
                 state.isDashing = false;
                 state.controlEnabled = state.gravityEnabled = !state.isDashing;
+                
                 _lastComputedSpeed = currentSpeed;
             }
             state.controlEnabled = state.gravityEnabled = !state.isDashing;

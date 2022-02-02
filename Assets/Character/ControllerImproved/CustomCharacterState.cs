@@ -17,8 +17,6 @@ public class CustomCharacterState : MonoBehaviour
     [SerializeField] public bool isSlidingWall = false;
     [SerializeField] public bool isJumpingOffWall = false;
 
-
-
     [Header("Systems Controls")]
     [Space]
     [SerializeField] public bool controlEnabled = true;
@@ -40,16 +38,5 @@ public class CustomCharacterState : MonoBehaviour
 
     [SerializeField] public Vector2 speed = Vector2.zero;
     [SerializeField] public Vector2 facingDiretion = Vector2.zero;
-
-
-    public void setIsWalking(bool value)
-    {
-        isWalking = value;
-    }
-
-    public void setJumping(bool value)
-    {
-        isJumping = value;
-    }
 
 }

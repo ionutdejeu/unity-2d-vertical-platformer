@@ -13,6 +13,7 @@ namespace Assets.Character.ControllerImproved
 
         [SerializeField] private float jumpForce = 10f;      // Amount of force added when the player jumps.
         [SerializeField] private long lastTImestampJumpButtonWasPressed=0;      // Amount of force added when the player jumps.
+        private bool jumpBtnPressedPreviousFrame = false;
 
 
         [SerializeField]
@@ -54,20 +55,31 @@ namespace Assets.Character.ControllerImproved
  
             float a = Input.GetAxis("Jump");
             bool jumpBtnPressed = a > 0;
+
+            // need to handle continous button press 
+            // need to handl jump button tap 
+            bool jumpButtonPressedContiously = jumpBtnPressedPreviousFrame && jumpBtnPressed;
+            bool jumpButtonTap = !jumpBtnPressedPreviousFrame && jumpBtnPressed;
+
+
+            
+            // when a new jump is started the previous state needs not be jumping 
             bool newJumpStarted = !state.isJumping && jumpBtnPressed;
 
-            jumpUntillInTicks = canJump && jumpCanStart && jumpBtnPressed && newJumpStarted ? DateTime.UtcNow.Ticks : jumpUntillInTicks;
+            // update the timestamp for last jump duration when there's a new jump started 
+            jumpUntillInTicks = canJump && jumpCanStart && newJumpStarted ? DateTime.UtcNow.Ticks : jumpUntillInTicks;
             lastTImestampJumpButtonWasPressed = jumpBtnPressed ? DateTime.UtcNow.Ticks : lastTImestampJumpButtonWasPressed;
 
             bool continueCurrentJump = canJump && jumpCanStart && jumpBtnPressed && continueJumping(jumpUntillInTicks, DateTime.UtcNow.Ticks);
             bool stopCurrentJumping = canJump && jumpCanStart && jumpBtnPressed  && !continueJumping(jumpUntillInTicks, DateTime.UtcNow.Ticks);
 
 
-            //double jump loigc 
+            //double jump logic 
 
             bool canPerformDoubleJump = newJumpStarted && canDoubleJump(state,jumpUntillInTicks, DateTime.UtcNow.Ticks);
-            bool didDoubleJump = canPerformDoubleJump;
+            bool didDoubleJump = canPerformDoubleJump && jumpButtonTap;
 
+            Debug.Log("double jump:" + didDoubleJump.ToString());
             bool jumpOffWall = state.isTouchingWall && state.isJumping;
             bool slideWall = state.isTouchingWall && !state.isJumping;
             Debug.Log(canPerformDoubleJump);
@@ -78,7 +90,7 @@ namespace Assets.Character.ControllerImproved
             state.isJumping = continueCurrentJump && !stopCurrentJumping;
             state.isJumpingOffWall = state.isTouchingWall && state.isJumping;
             state.isSlidingWall = state.isTouchingWall && !state.isJumping;
-
+            jumpBtnPressedPreviousFrame = jumpBtnPressed;
             
             return _previousComputedSpeed;
         }
