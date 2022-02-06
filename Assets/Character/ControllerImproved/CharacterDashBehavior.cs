@@ -45,7 +45,7 @@ namespace Assets.Character.ControllerImproved
         public Vector2 ComputeBehavior(Vector2 currentSpeed, CustomCharacterState state)
         {
             // need to handle dash after jump to stop the jumping
-            float a = Input.GetAxis("Fire1");
+            float a = Input.GetAxis("Fire3");
             if (a > 0 && !isDashing && canDash(dashUntilTicks, DateTime.UtcNow.Ticks, cooldown))
             {
                 dashUntilTicks = DateTime.UtcNow.Ticks + 1000000 * dashDuration;

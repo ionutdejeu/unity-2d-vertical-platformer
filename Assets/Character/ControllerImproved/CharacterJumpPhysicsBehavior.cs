@@ -8,15 +8,12 @@ using static CharacterController2D;
 
 namespace Assets.Character.ControllerImproved
 {
-    public class CharacterJumpBehavior : MonoBehaviour, ICharacterBehavior
+    public class CharacterJumpPhysicsBehavior : MonoBehaviour, ICharacterBehavior
     {
 
         [SerializeField] private float jumpForce = 10f;      // Amount of force added when the player jumps.
         [SerializeField] private long lastTImestampJumpButtonWasPressed=0;      // Amount of force added when the player jumps.
         private bool jumpBtnPressedPreviousFrame = false;
-        private Vector2 jumpDirection = Vector2.up;
-        private bool didJumpOffWall = false;
-        private bool didSimpleOrDoubleJump = true;
 
 
         [SerializeField]
@@ -43,12 +40,10 @@ namespace Assets.Character.ControllerImproved
         public Vector2 GetWallJumpingSpeed(float direction, float force, float input)
         {
             //45 degree angle jump 
-            return new Vector2(direction, direction).normalized;
+            return new Vector2(direction, 1);
         }
         
         
-
-
         public Vector2 ComputeBehavior(Vector2 currentSpeed, CustomCharacterState state)
         {
 
@@ -78,34 +73,22 @@ namespace Assets.Character.ControllerImproved
 
             //double jump logic 
             bool canDoubleJ = !state.isGrounded && (stopCurrentJumping || newJumpStarted);
+            bool canDJump = canDoubleJump(state, canJump);
 
 
+            bool canPerformDoubleJump = newJumpStarted && canDoubleJump(state,canJump);
             bool didDoubleJump = canDoubleJ && jumpButtonTap;
 
 
             bool jumpOffWall = state.isTouchingWall && state.isJumping;
             bool slideWall = state.isTouchingWall && !state.isJumping;
 
-            didJumpOffWall = jumpOffWall;
-            didSimpleOrDoubleJump = (newJumpStarted || didDoubleJump) && !didJumpOffWall;
-            if (didSimpleOrDoubleJump) {
-                jumpDirection = Vector2.up;
-            }
-            if(didJumpOffWall)
-            {
-                jumpDirection = Vector2.right* Convert.ToInt32(state.isTouchingWallOnLeft)
-               + Vector2.left * Convert.ToInt32(state.isTouchingWallOnRight);
-                jumpDirection.y = 1;
 
-            }
-            _previousComputedSpeed = jumpDirection;
-
-            _previousComputedSpeed *=jumpForce * a * Convert.ToInt32(
-                canJump && (jumpCanStart||didDoubleJump) && (continueCurrentJump|| didDoubleJump)
-                );
+            _previousComputedSpeed.y = jumpForce * a * Convert.ToInt32(canJump && (jumpCanStart||didDoubleJump) && (continueCurrentJump|| didDoubleJump));
             jumpUntillInTicks = didDoubleJump ? DateTime.UtcNow.Ticks : jumpUntillInTicks;
 
-            Debug.Log("speed:" + _previousComputedSpeed);
+            Debug.Log("can j:" + canJump.ToString() + " jump can start: " + jumpCanStart + " did dj:" + didDoubleJump + " continue currentj:" + continueCurrentJump);
+
             state.isJumping = (continueCurrentJump || didDoubleJump) && !stopCurrentJumping ;
             state.isJumpingOffWall = state.isTouchingWall && state.isJumping;
             state.isSlidingWall = state.isTouchingWall && !state.isJumping;

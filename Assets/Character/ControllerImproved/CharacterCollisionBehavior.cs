@@ -50,6 +50,9 @@ namespace Assets.Character.ControllerImproved
 			touchingRightWall = Physics2D.IsTouchingLayers(m_RightCollider, m_WhatIsWall);
 			
 			state.isTouchingWall = touchingLeftWall || touchingRightWall;
+			state.isTouchingWallOnRight = touchingRightWall;
+			state.isTouchingWallOnLeft = touchingLeftWall;
+
 			bool c = Physics2D.IsTouchingLayers(m_BottomColloder, m_WhatIsGround);
 
 			for (int i = 0; i < colliders.Length; i++)
