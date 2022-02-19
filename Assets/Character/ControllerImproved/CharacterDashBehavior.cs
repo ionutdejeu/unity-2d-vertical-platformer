@@ -15,6 +15,7 @@ namespace Assets.Character.ControllerImproved
         [SerializeField] private int dashDuration = 2;
         [SerializeField] private float dashSpeed = 10f;
         [SerializeField] private int cooldown = 1;
+        CharacterEvents charEvents;
 
 
 
@@ -22,7 +23,12 @@ namespace Assets.Character.ControllerImproved
         private bool isDashing = false;
         private Vector2 dashDirection;
         private Vector2 speedPrevFrame;
-        
+
+        public void Start()
+        {
+            charEvents = GetComponent<CharacterEvents>();
+        }
+
 
         private bool continueDashing(long currentTimestamp)
         {

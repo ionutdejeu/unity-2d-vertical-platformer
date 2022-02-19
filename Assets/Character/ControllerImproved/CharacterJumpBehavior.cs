@@ -45,7 +45,11 @@ namespace Assets.Character.ControllerImproved
             //45 degree angle jump 
             return new Vector2(direction, direction).normalized;
         }
-        
+
+        float canDoubleJumpCooldown()
+        {
+            return 0f;
+        } 
         
 
 

@@ -23,15 +23,17 @@ namespace Assets.Character.ControllerImproved
 		[Space]
 		public UnityEvent OnLandEvent;
 
+
 		[SerializeField] public bool touchingLeftWall = false;
 		[SerializeField] public bool touchingRightWall = false;
-
+		CharacterEvents charEvents;
 
 		// Start is called before the first frame update
 		void Awake()
 		{
 			if (OnLandEvent == null)
 				OnLandEvent = new UnityEvent();
+			
 
 		}
 
@@ -39,6 +41,7 @@ namespace Assets.Character.ControllerImproved
         {
 			
         }
+
 
         public Vector2 ComputeBehavior(Vector2 currentSpeed, CustomCharacterState state)
         {

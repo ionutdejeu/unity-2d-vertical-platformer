@@ -5,17 +5,14 @@ using UnityEngine.Events;
 
 public class CharacterEvents : MonoBehaviour
 {
-    [Header("Events")]
+    [Header("Controller Events")]
     [Space]
-    public UnityEvent OnLandEvent;
-    public UnityEvent OnTouchWall;
-    public UnityEvent OnJump;
-    public UnityEvent OnDoubleJump;
-    public UnityEvent OnDash;
-    public UnityEvent OnJumpMaxHeightReached;
-
-
-    
+    public UnityEvent<Vector2> OnLandEvent = new UnityEvent<Vector2>();
+    public UnityEvent<Vector2> OnTouchWall = new UnityEvent<Vector2>();
+    public UnityEvent<Vector2> OnJump = new UnityEvent<Vector2>();
+    public UnityEvent<Vector2> OnDoubleJump = new UnityEvent<Vector2>();
+    public UnityEvent<Vector2> OnDash = new UnityEvent<Vector2>();
+    public UnityEvent<Vector2> OnJumpMaxHeightReached = new UnityEvent<Vector2>();
 
     private void OnEnable()
     {
