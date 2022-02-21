@@ -17,6 +17,13 @@ namespace Assets.Character.ControllerImproved
         private Vector2 jumpDirection = Vector2.up;
         private bool didJumpOffWall = false;
         private bool didSimpleOrDoubleJump = true;
+        public UnityEvent<float> onCooldownProgressEvent = new UnityEvent<float>();
+
+
+        void Start()
+        {
+           
+        }
 
 
         [SerializeField]
