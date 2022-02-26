@@ -59,7 +59,11 @@ namespace Assets.Character.ControllerImproved
             {
                 return 0;
             }
-            return Mathf.Clamp((float)(canDashAfter - currentTimestamp) / (float)(canDashAfter - dashStartedOn),0,1);
+            //if(currentTimestamp> canDashAfter)
+            //{
+            //    return 0;
+            //}
+            return Mathf.Clamp((float)(dashStartedOn - currentTimestamp) / (float)(canDashAfter - dashStartedOn),0,1);
         }
 
         public Vector2 ComputeBehavior(Vector2 currentSpeed, CustomCharacterState state)
@@ -96,8 +100,6 @@ namespace Assets.Character.ControllerImproved
                 _lastComputedSpeed = currentSpeed;
             }
             float curr_progress = colldownCounter(canDashAfter, DateTime.UtcNow.Ticks, dashStartedOn);
-            Debug.Log(" canDashAfter:"+ canDashAfter+ " dashStartedOn:"+dashStartedOn);
-
             if (curr_progress != last_computed_progress)
             {
                 onDashCooldownUpdate.Invoke(curr_progress);

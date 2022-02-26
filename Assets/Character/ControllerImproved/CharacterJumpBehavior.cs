@@ -116,7 +116,6 @@ namespace Assets.Character.ControllerImproved
                 );
             jumpUntillInTicks = didDoubleJump ? DateTime.UtcNow.Ticks : jumpUntillInTicks;
 
-            Debug.Log("speed:" + _previousComputedSpeed);
             state.isJumping = (continueCurrentJump || didDoubleJump) && !stopCurrentJumping ;
             state.isJumpingOffWall = state.isTouchingWall && state.isJumping;
             state.isSlidingWall = state.isTouchingWall && !state.isJumping;
