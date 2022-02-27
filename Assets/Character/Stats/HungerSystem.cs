@@ -15,22 +15,20 @@ public class HungerSystem : MonoBehaviour
 
     [SerializeField] UnityEvent onHungerDepleted = new UnityEvent();
     List<PickupObject> collectablesInLevel = new List<PickupObject>();
-    private static HungerSystem hSystem;
-    public static HungerSystem Instance()
-    {
-        return hSystem;
 
-    }
+    [SerializeField] HungarUiView view;
+    
     private void handlItemPickedup(GenericPickupObjectPayload<int> payload)
     {
-        Debug.Log("Hunger System Pickup:" + payload.payload);
+        currentHungarLeft = Mathf.Min(totalHungar,payload.payload+currentHungarLeft);
+        view.SetHungarValue((int)currentHungarLeft);
     }
     // Use this for initialization
     void Start()
     {
         currentHungarLeft = totalHungar;
         timePassedSinceStarted = 0;
-        hSystem = this;
+        
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Food");
         foreach(GameObject ob in objs)
         {
@@ -46,7 +44,7 @@ public class HungerSystem : MonoBehaviour
     void Update()
     {
         timePassedSinceStarted += Time.deltaTime;
-        if (currentHungarLeft >= 0)
+        if (currentHungarLeft <= 0)
         {
             // emit event
             onHungerDepleted.Invoke();
@@ -60,6 +58,8 @@ public class HungerSystem : MonoBehaviour
             // decrement hunger based on curve value;
             float decrementFactor = decreaseCurve.Evaluate(currentHungarLeft / totalHungar);
             currentHungarLeft -= hungarDecrement * decrementFactor;
+            view.SetHungarValue((int)currentHungarLeft);
+
         }
         
     }

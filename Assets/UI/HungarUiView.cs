@@ -4,7 +4,7 @@ using System.Collections;
 
 public class HungarUiView : MonoBehaviour
 {
-    [SerializeField] Scrollbar scrollbar;
+    [SerializeField] Slider scrollbar;
     // Use this for initialization
     public void SetHungarValue(int v)
     {
